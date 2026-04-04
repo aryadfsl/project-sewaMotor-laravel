@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,7 +17,32 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        DB::table('categories')->insert([
+            [
+                'category_id' => 1,
+                'category_name' => 'Matic',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'category_id' => 2,
+                'category_name' => 'Sport',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+        ]);
+
+        DB::table('products')->insert([
+            [
+                'product_id' => 1,
+                'category_id' => 1,
+                'product_name' => 'Harley Davidson Sportster S',
+                'product_price' => 1000000000,
+                'product_stock' => 10,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+        ]);
 
         User::factory()->create([
             'name' => 'Test User',

@@ -84,7 +84,13 @@
     </div>
 
     <div class="container mt-5">
-        <h3 class="mb-4">Daftar Motor</h3>
+        <div class="position-relative mb-3">
+            <h3 class="mb-4 text-center">Daftar motor</h3>
+            <a href="{{ route('products') }}" class="text-decoration-none text-dark fw-semibold position-absolute end-0 top-50 translate-middle-y" style="right:0;">
+                Lihat semua produk >>>
+            </a>
+        </div>
+        
         <div class="row justify-content-center" id="container-barang">
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
