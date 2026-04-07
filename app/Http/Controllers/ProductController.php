@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\product;
 use App\Models\category;
+use App\Models\Brand;
 
 class ProductController extends Controller
 {
@@ -14,8 +15,9 @@ class ProductController extends Controller
     public function index()
     {
         $category = category::all();
-        $products = product::with('category')->get();
-        return view('product', compact('products', 'category'));
+        $brands = Brand::all();
+        $products = product::with(['category', 'brand'])->get();
+        return view('product', compact('products', 'category', 'brands'));
     }
  
     /**
@@ -34,6 +36,7 @@ class ProductController extends Controller
         $validatedData = $request->validate([
             'product_name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,category_id',
+            'brand_id' => 'required|exists:brands,brand_id',
             'product_price' => 'required|numeric',
             'product_stock' => 'required|integer',
         ]);

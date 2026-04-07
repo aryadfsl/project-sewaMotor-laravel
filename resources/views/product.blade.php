@@ -94,6 +94,9 @@
                     <div class="card-body">
                         <h5 class="card-tittle mt-2">{{ $item->product_name }}</h5>
                         <span class="badge bg-secondary mb-2">{{ $item->category->category_name }}</span>
+                        @if($item->brand)
+                        <span class="badge bg-secondary mb-2">{{ $item->brand->nama_brand }}</span>
+                        @endif
                         <p class="card-text text-danger">
                             Rp{{ number_format($item->product_price, 0, ',', '.') }}
                         </p>
@@ -190,6 +193,15 @@
                                 <option value="">Pilih Kategori</option>
                                 @foreach ($category as $cat)
                                 <option value="{{ $cat->category_id }}">{{ $cat->category_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="brand_id" class="form-label">Brand</label>
+                            <select class="form-control" id="brand_id" name="brand_id" required>
+                                <option value="">Pilih Brand</option>
+                                @foreach ($brands as $brand)
+                                <option value="{{ $brand->brand_id }}">{{ $brand->nama_brand }}</option>
                                 @endforeach
                             </select>
                         </div>
