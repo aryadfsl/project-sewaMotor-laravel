@@ -72,7 +72,11 @@
                             </p>
                             <p class="card-text stok-text">Stok: {{ $item->product_stock }}</p>
                             <div class="d-flex justify-content-between">
-                                <button class="btn btn-primary btn-detail w-50 me-2">Sewa</button>
+                                @guest
+                                    <a href="{{ route('register') }}" class="btn btn-primary w-50 me-2">Sewa</a>
+                                @else
+                                    <button class="btn btn-primary btn-detail w-50 me-2">Sewa</button>
+                                @endguest
                                 <button class="btn btn-outline-danger btn-wishlist w-50">Wishlist</button>
                             </div>
                         </div>
