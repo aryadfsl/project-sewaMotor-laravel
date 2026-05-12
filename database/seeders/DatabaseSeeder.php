@@ -7,6 +7,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -95,6 +96,7 @@ class DatabaseSeeder extends Seeder
                 'product_name' => 'Honda Vario 150',
                 'product_price' => 25000000,
                 'product_stock' => 15,
+                'image' => null,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
@@ -105,6 +107,7 @@ class DatabaseSeeder extends Seeder
                 'product_name' => 'Yamaha R15',
                 'product_price' => 35000000,
                 'product_stock' => 8,
+                'image' => null,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
@@ -115,6 +118,7 @@ class DatabaseSeeder extends Seeder
                 'product_name' => 'Kawasaki W175',
                 'product_price' => 32000000,
                 'product_stock' => 5,
+                'image' => null,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
@@ -125,14 +129,24 @@ class DatabaseSeeder extends Seeder
                 'product_name' => 'Suzuki V-Strom 250',
                 'product_price' => 60000000,
                 'product_stock' => 3,
+                'image' => null,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
         ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        User::create([
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('admin123'),
+            'role' => 'admin',
+        ]);
+
+        User::create([
+            'name' => 'User',
+            'email' => 'user@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'user',
         ]);
     }
 }

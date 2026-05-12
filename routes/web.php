@@ -1,21 +1,32 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
+use App\Models\product;
 
-// Halaman Utama
 Route::get('/', function () {
-    return view('index');
+    $products = product::with(['category', 'brand'])->get();
+
+    return view('index', compact('products'));
 })->name('home');
 
-// Halaman Login
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-// Proses Form Login & Logout
-Route::post('/login', [AuthController::class, 'login'])->name('login.proses');
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-Route::get('/products', [ProductController::class, 'index'])->name('products');
-Route::post('/products', [ProductController::class, 'store'])->name('products.store');
-?>
+Route::get('/products', [ProductController::class, 'index'])->middleware('auth')->name('products');
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+    Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
+    Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+});
+
+require __DIR__.'/auth.php';

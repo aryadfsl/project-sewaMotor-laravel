@@ -1,38 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.main')
 
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-</head>
+@section('title', 'Login')
+@section('body_class', 'login-page')
+@section('hide_navbar', '1')
+@section('hide_footer', '1')
 
-<body class="login-page">
+@section('content')
     <div class="login-container">
         <div class="login-card">
             <h2>Login</h2>
-            <div class="alert alert-danger">{{session('error')}} </div>
-            <form method="POST" action="{{ route('login.proses') }}">
+            @if(session('error'))
+                <div class="alert alert-danger">{{ session('error') }}</div>
+            @endif
+            <form method="POST" action="{{ route('login') }}">
                 @csrf
                 <div class="mb-3">
-                    <label class="form-label">Username</label>
-                    <input type="text" name="username" class="form-control"
-                        value="{{ request()->cookie('username') ??  '' }}" required>
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" value="{{ old('email') }}" required>
+                    @error('email')
+                        <small class="text-danger d-block text-start">{{ $message }}</small>
+                    @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Password</label>
                     <input type="password" name="password" class="form-control" required />
+                    @error('password')
+                        <small class="text-danger d-block text-start">{{ $message }}</small>
+                    @enderror
                 </div>
-                <div class="form-check mb-3">
+                <div class="form-check mb-3 text-start">
                     <input type="checkbox" name="remember" class="form-check-input" id="rememberMe">
                     <label class="form-check-label" for="rememberMe">Remember Me</label>
                 </div>
                 <button type="submit" class="btn btn-warning">Login</button>
-                <a href="index.php" class="btn btn-link">Kembali ke Beranda</a>
+                <a href="{{ route('register') }}" class="btn btn-link">Register</a>
+                <a href="{{ route('home') }}" class="btn btn-link">Kembali ke Beranda</a>
             </form>
         </div>
     </div>
-</body>
-
-</html>
+@endsection

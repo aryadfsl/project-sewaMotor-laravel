@@ -1,22 +1,24 @@
 const btnTheme = document.getElementById('btn-theme');
 const body = document.body;
 
-if (localStorage.getItem('theme') === 'dark') {
+if (btnTheme && localStorage.getItem('theme') === 'dark') {
     body.classList.add('dark-mode');
     btnTheme.innerText = "Mode Terang";
 }
 
-btnTheme.addEventListener('click', function () {
-    body.classList.toggle('dark-mode');
+if (btnTheme) {
+    btnTheme.addEventListener('click', function () {
+        body.classList.toggle('dark-mode');
 
-    if (body.classList.contains('dark-mode')) {
-        localStorage.setItem('theme', 'dark');
-        btnTheme.innerText = "Mode Terang";
-    } else {
-        localStorage.removeItem('theme');
-        btnTheme.innerText = "Mode Gelap";
-    }
-});
+        if (body.classList.contains('dark-mode')) {
+            localStorage.setItem('theme', 'dark');
+            btnTheme.innerText = "Mode Terang";
+        } else {
+            localStorage.removeItem('theme');
+            btnTheme.innerText = "Mode Gelap";
+        }
+    });
+}
 
 function aktifkanTombolBeli() {
     const tombolBeli = document.querySelectorAll('.btn-detail');
@@ -50,6 +52,10 @@ aktifkanTombolBeli();
 
 // Wishlist/Keranjang Section 
 document.addEventListener('DOMContentLoaded', function () {
+    if (!document.getElementById('wishlist-count')) {
+        return;
+    }
+
     // Ambil wishlist dari sessionStorage atau buat array baru
     let wishlist = JSON.parse(sessionStorage.getItem("wishlist")) || [];
     sessionStorage.setItem("wishlist", JSON.stringify(wishlist));
