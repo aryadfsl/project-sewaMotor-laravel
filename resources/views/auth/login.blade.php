@@ -32,7 +32,11 @@
                     <input type="checkbox" name="remember" class="form-check-input" id="rememberMe">
                     <label class="form-check-label" for="rememberMe">Remember Me</label>
                 </div>
-                <button type="submit" class="btn btn-warning">Login</button>
+
+                <button type="submit" class="btn btn-warning w-100 mb-2">Login</button>
+                <a href="{{ route('google.redirect') }}" class="btn btn-outline-dark w-100 mb-2">
+                    <i class="bi bi-google me-2"></i>Login dengan Google
+                </a>
                 <a href="{{ route('register') }}" class="btn btn-link">Register</a>
                 <a href="{{ route('home') }}" class="btn btn-link">Kembali ke Beranda</a>
             </form>

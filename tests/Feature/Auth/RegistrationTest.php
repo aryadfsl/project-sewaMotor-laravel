@@ -28,4 +28,22 @@ class RegistrationTest extends TestCase
         $this->assertAuthenticated();
         $response->assertRedirect(route('products', absolute: false));
     }
+
+    public function test_registration_requires_recaptcha_when_enabled(): void
+    {
+        config(['services.recaptcha.enabled' => true]);
+
+        $response = $this->from('/register')->post('/register', [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ]);
+
+        $response
+            ->assertRedirect('/register')
+            ->assertSessionHasErrors('g-recaptcha-response');
+
+        $this->assertGuest();
+    }
 }

@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -30,11 +31,38 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        $rules = [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+        ];
+
+        if (config('services.recaptcha.enabled')) {
+            $rules['g-recaptcha-response'] = [
+                'required',
+                'string',
+                function (string $attribute, mixed $value, \Closure $fail) use ($request): void {
+                    $secretKey = config('services.recaptcha.secret_key');
+
+                    if (blank($secretKey)) {
+                        $fail('Konfigurasi reCAPTCHA belum lengkap.');
+                        return;
+                    }
+
+                    $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+                        'secret' => $secretKey,
+                        'response' => $value,
+                        'remoteip' => $request->ip(),
+                    ]);
+
+                    if (! $response->ok() || ! $response->json('success')) {
+                        $fail('Verifikasi reCAPTCHA gagal. Silakan coba lagi.');
+                    }
+                },
+            ];
+        }
+
+        $request->validate($rules);
 
         $user = User::create([
             'name' => $request->name,

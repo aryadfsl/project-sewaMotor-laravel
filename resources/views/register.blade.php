@@ -1,9 +1,3 @@
-@extends('layouts.main')
-
-@section('title', 'Register')
-@section('body_class', 'login-page')
-@section('hide_navbar', '1')
-@section('hide_footer', '1')
 
 @section('content')
     <div class="login-container">

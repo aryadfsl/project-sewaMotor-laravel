@@ -36,6 +36,16 @@
                     <label class="form-label">Konfirmasi Password</label>
                     <input type="password" name="password_confirmation" class="form-control" required>
                 </div>
+
+                @if(config('services.recaptcha.enabled'))
+                    <div class="mb-3 d-flex justify-content-center">
+                        <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
+                    </div>
+                    @error('g-recaptcha-response')
+                        <small class="text-danger d-block mb-3">{{ $message }}</small>
+                    @enderror
+                @endif
+
                 <button type="submit" class="btn btn-warning">Register</button>
                 <a href="{{ route('login') }}" class="btn btn-link">Login</a>
                 <a href="{{ route('home') }}" class="btn btn-link">Kembali ke Beranda</a>
@@ -43,3 +53,9 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    @if(config('services.recaptcha.enabled'))
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    @endif
+@endpush
